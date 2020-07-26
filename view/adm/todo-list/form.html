@@ -1,0 +1,67 @@
+{% extends "templates/admin.html" %}
+
+{% block CONTENT %}
+    <div id="home">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 my-5 border-bottom">
+                    <div class="float-left">
+                        <h1>Lista de afazeres</h1>
+                    </div>
+                    <div class="float-right">
+                        <button class="button-custom-blue">
+                            <i class="fa fa-plus mr-1" aria-hidden="true"></i> Novo
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-12 mb-4">
+                    <form action="{{base_url}}admin/task/{{ action }}" name="frmTask" id="frmTask" method="post">
+                        {% if (action == 'edit') %}
+                            <input type="hidden" name="id" id="id" value="{{ data.id ?? '' }}">
+                        {% endif %}
+
+                        <div class="form-group row">
+                            <label for="event" class="col-sm-2 col-form-label font-weight-bold">Evento</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="event" name="event" value="{{ data.event ?? '' }}" autocomplete="off" placeholder="Digite nome do evento.">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="description" class="col-sm-2 col-form-label font-weight-bold">Descrição</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="description" name="description" value="{{ data.description ?? '' }}" autocomplete="off" placeholder="Digite uma breve descrição do evento.">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="start_date" class="col-2 col-form-label font-weight-bold">Data/Hora de início</label>
+                            <div class="col-5">
+                                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ data.start_date ?? '' }}" autocomplete="off" placeholder="00/00/0000">
+                            </div>
+                            <div class="col-5">
+                                <input type="time" class="form-control" id="start_time" name="start_time" value="{{ data.start_time ?? '' }}" autocomplete="off" placeholder="00:00">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="closing_date" class="col-2 col-form-label font-weight-bold">Data/Hora de encerramento</label>
+                            <div class="col-5">
+                                <input type="date" class="form-control" id="closing_date" name="closing_date" value="{{ data.closing_date ?? '' }}" autocomplete="off" placeholder="00/00/0000">
+                            </div>
+                            <div class="col-5">
+                                <input type="time" class="form-control" id="closing_time" name="closing_time" value="{{ data.closing_time ?? '' }}" autocomplete="off" placeholder="00:00">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="event" class="col-sm-2 col-form-label"></label>
+                            <div class="col-sm-10">
+                                <button type="submit" class="button-custom-blue">
+                                    <i class="fa fa-paper-plane mr-1" aria-hidden="true"></i> Salvar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "templates/admin.html" %}
+
+{% block CONTENT %}
+        <div id="todo-list">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 my-4">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Lista de afazeres</h1>
+                            <a href="{{base_url}}admin/task/new" class="button-custom-blue">
+                                <i class="fa fa-plus" aria-hidden="true"></i> Novo
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <div class="card shadow-sm mb-3 bg-light">
+                            <div class="card-body p-1">
+                                <table class="table table-borderless mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th width="30%" class="text-left">Evento</th>
+                                            <th width="35%" class="text-left">Descrição</th>
+                                            <th width="15%" class="text-center">Início</th>
+                                            <th width="15%" class="text-center">Encerramento</th>
+                                            <th width="5%" class="text-center">Opções</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+
+                        {% for item in list %}
+                        <div class="card shadow-sm mb-3">
+                            <div class="card-body p-1">
+                                <table class="table table-borderless mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <td width="30%" class="text-left">{{ item.event }}</th>
+                                            <td width="35%" class="text-left">{{ item.description }}</th>
+                                            <td width="15%" class="text-center">{{ item.initial_date_time }}</th>
+                                            <td width="15%" class="text-center">{{ item.final_date_time }}</th>
+                                            <td width="5%" class="text-center">
+                                                <div class="dropdown">
+                                                    <a href="#" class="py-2 px-3 text-body" id="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="dropdown">
+                                                        <a class="dropdown-item" href="{{ base_url }}admin/task/{{ item.id }}/edit">
+                                                            <i class="fa fa-pencil" aria-hidden="true"></i> Editar
+                                                        </a>
+                                                        <a class="dropdown-item text-danger" href="{{ base_url }}admin/task/{{ item.id }}/remove">
+                                                            <i class="fa fa-trash" aria-hidden="true"></i> Remover
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <div class="float-right">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                  <li class="page-item">
+                                      <a class="page-link text-body" href="#">
+                                          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                        </a>
+                                    </li>
+
+                                    <li class="page-item"><a class="page-link text-body" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link text-body" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link text-body" href="#">3</a></li>
+
+                                    <li class="page-item">
+                                        <a class="page-link text-body" href="#">
+                                            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                              </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

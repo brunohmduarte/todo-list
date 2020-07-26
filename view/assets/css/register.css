@@ -1,0 +1,15 @@
+.form-signin input {
+    border-radius: 0;
+    margin-bottom: -1px;
+}
+.form-signin input:first-of-type {
+    border-top-right-radius: .25rem;
+    border-top-left-radius: .25rem;
+}
+.form-signin input:last-of-type {
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+}
+.form-signin input[type="password"] {
+    margin-bottom: -1px;
+}
