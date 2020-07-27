@@ -1,0 +1,64 @@
+{% extends "templates/credentials.html" %}
+
+{% block STYLE %}
+    <link rel="stylesheet" href="{{base_url}}view/assets/css/register.css">
+{% endblock %}
+
+{% block CONTENT %}
+    <div id="site">
+        <form action="{{base_url}}register" name="frmSignup" id="frmSignup" method="POST" class="form-signin" v-on:submit.prevent>
+            <h1 class="h3 mb-4 font-weight-normal text-center">Cadastre-se</h1>
+
+            <label for="name" class="sr-only">Nome</label>
+            <input type="text" id="name" name="name" class="form-control" value="" placeholder="Nome" required autofocus autocomplete="off">
+            
+            <label for="address_email" class="sr-only">E-mail</label>
+            <input type="email" id="address_email" name="address_email" class="form-control" value="" placeholder="E-mail" required autocomplete="off">
+            
+            <label for="password" class="sr-only">Senha</label>
+            <input type="password" id="password" name="password" class="form-control" value="" placeholder="Senha" required autocomplete="off">
+            
+            <label for="confirm_password" class="sr-only">Confirmação de senha</label>
+            <input type="password" id="confirm_password" name="confirm_password" class="form-control" value="" placeholder="Confirmação de senha" required autocomplete="off">
+            
+            <div class="text-left mt-1">
+                <small class="mr-2">Eu já possuo um cadastro. <a href="{{base_url}}signin">Entrar</a></small>
+            </div>
+
+            <button class="button-custom-blue w-100 mt-3" type="submit" v-on:click="registerUser($event)">
+                <i class="fa fa-paper-plane mr-1" aria-hidden="true"></i> CADASTRAR
+            </button>            
+        </form>
+    </div>
+{% endblock %}
+
+{% block SCRIPT %}
+    <script>
+        const url_base = "http://localhost/teste/to-do-list/"
+
+        let app = new Vue({
+            el: "#site",
+            data: {},
+            methods: {
+                registerUser(event) {
+
+                    let form = new FormData(event.target.form)
+                    let request = fetch("register", { method: 'POST', body: form})
+                    
+                    setTimeout(() => {
+                        request
+                            .then(response => response.json())
+                            .then(data => {
+                                if (typeof data.error !== 'undefined') {
+                                    alert(data.error)
+                                    return;
+                                }
+                                window.location.href = `${url_base}signin`
+                            })
+                            .catch(err => console.error(err))
+                    }, 500);
+                }
+            }
+        })
+    </script>
+{% endblock %}

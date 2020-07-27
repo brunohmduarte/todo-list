@@ -49,11 +49,16 @@ class Session
         unset($_SESSION);
         return;
     }
-
+    
+    /**
+     * Checa se a seção de usuário esta ativa.
+     *
+     * @return void
+     */
     public function authenticated() : void
     {
         if (!isset($_SESSION["user"]) || empty($_SESSION["user"])) {
-            header('Location: ' . URL_BASE .'login');
+            header('Location: ' . URL_BASE .'signin');
         }
     }
 }

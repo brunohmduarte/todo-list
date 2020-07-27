@@ -2,17 +2,65 @@
 
 namespace Source\App;
 
+use Source\App\Helpers\Crypto;
+use Source\Models\FormValidation\SignUp;
 use Source\Models\User;
 
 class Admin extends Controller
-{
-    public function login() : void
+{     
+    /**
+     * mesageError
+     *
+     * @var string
+     */
+    public $mesageError = "Ooops! Não foi possível realizar o cadastro, tente novamente.";
+    
+    /**
+     * Redireciona para a página signin.
+     *
+     * @return void
+     */
+    public function signin() : void
     {
-        $this->redirect("signin.php");
+        $this->redirect("signin.html");
     }
-
-    public function register() : void
+    
+    /**
+     * Redireciona para a página signup.
+     *
+     * @return void
+     */
+    public function signup() : void
     {
-        $this->redirect("register.php");
+        $this->redirect("signup.html");
+    }
+    
+    /**
+     * Registra um novo usuário para utilizar à aplicação.
+     *
+     * @param  mixed $data - Dados do usuário vindo do formulário de cadastro.
+     * @return void
+     */    
+    public function register(array $data) : void
+    {
+        if (!(new SignUp)->validateData($data)) {
+            print json_encode(["error" => $this->mesageError]);
+            return;
+        }
+        
+        list($name, $email, $password) = array_values($data);
+
+        $user = new User();
+        $user->first_name = $name;
+        $user->email = $email;
+        $user->password = Crypto::createHash($password);
+        
+        if ($user->save()) {
+            print json_encode(["success" => "Cadastro realizado com sucesso!"]);
+            return;
+        }
+
+        print json_encode(["error" => $this->mesageError]);
+        return;
     }
 }

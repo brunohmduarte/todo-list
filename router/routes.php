@@ -14,10 +14,10 @@ $router->namespace("Source\App");
  */
 $router->group(null);
 $router->post("/authenticate", "Authentication:authenticate");
-
-$router->get("/register", "Admin:register");
-$router->get("/login", "Admin:login");
-$router->get("/", "Admin:login");
+$router->post("/register", "Admin:register");
+$router->get("/signup", "Admin:signup");
+$router->get("/signin", "Admin:signin");
+$router->get("/", "Admin:signin");
 
 /**
  * Section Admin

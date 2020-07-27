@@ -4,6 +4,11 @@ body {
   background-color: #f5f5f5;
 }
 
+:root {
+  --gradient-blue: linear-gradient(107deg,#003e60 17%,#2dd7ff 112%);
+  /* --gradient-blue: linear-gradient(107deg,#2db5ff 17%,#2dd7ff 112%); */
+}
+
 #site {
   height: 100%;
   display: -ms-flexbox;
@@ -42,4 +47,32 @@ body {
   margin-bottom: 5px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+.button-custom-blue {
+  line-height: 48px;
+  height: 48px;
+  padding: 0 30px;
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 40px;
+  background: #2db5ff;
+  background-image: var(--gradient-blue);
+  -webkit-transition: ease-out .2s;
+  -o-transition: ease-out .2s;
+  transition: ease-out .2s;
+}
+
+.button-custom-blue:hover {
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, .1);
+}
+
+.button-custom-blue:focus {
+  outline: none;
+  box-shadow: none;
 }
