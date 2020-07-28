@@ -13,7 +13,7 @@ class Admin extends Controller
      *
      * @var string
      */
-    public $mesageError = "Ooops! Não foi possível realizar o cadastro, tente novamente.";
+    public $mesageError = "Não foi possível realizar o cadastro, verifique se as informações do formulário estão corretas e tente novamente.";
     
     /**
      * Redireciona para a página signin.

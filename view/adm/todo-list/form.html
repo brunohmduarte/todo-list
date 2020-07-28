@@ -1,7 +1,7 @@
 {% extends "templates/admin.html" %}
 
 {% block CONTENT %}
-    <div id="home">
+    <div id="formTasks">
         <div class="container">
             <div class="row">
                 <div class="col-12 my-5 border-bottom">
@@ -9,14 +9,19 @@
                         <h1>Lista de afazeres</h1>
                     </div>
                     <div class="float-right">
-                        <button class="button-custom-blue">
-                            <i class="fa fa-plus mr-1" aria-hidden="true"></i> Novo
+                        <button class="button-custom button-custom-yallow" v-on:click="window.history.go(-1)">
+                            <i class="fa fa-arrow-left mr-1" aria-hidden="true"></i> VOLTAR
                         </button>
+                        {% if action == "edit" %}
+                            <button class="button-custom button-custom-blue ml-2" v-on:click="newTask">
+                                <i class="fa fa-plus mr-1" aria-hidden="true"></i> NOVO
+                            </button>
+                        {% endif %}
                     </div>
                 </div>
 
                 <div class="col-12 mb-4">
-                    <form action="{{base_url}}admin/task/{{ action }}" name="frmTask" id="frmTask" method="post">
+                    <form action="{{base_url}}admin/task/{{ action }}" name="frmTask" id="frmTask" method="post" v-on:submit.prevent>
                         {% if (action == 'edit') %}
                             <input type="hidden" name="id" id="id" value="{{ data.id ?? '' }}">
                         {% endif %}
@@ -54,9 +59,17 @@
                         <div class="form-group row">
                             <label for="event" class="col-sm-2 col-form-label"></label>
                             <div class="col-sm-10">
-                                <button type="submit" class="button-custom-blue">
-                                    <i class="fa fa-paper-plane mr-1" aria-hidden="true"></i> Salvar
+                            {% if action == "register" %}
+                                <button type="submit" class="button-custom button-custom-blue" v-on:click="sendForm($event)">
+                                    <i class="fa fa-paper-plane mr-1" aria-hidden="true"></i> SALVAR
                                 </button>
+                            {% endif %}
+
+                            {% if action == "edit" %}
+                                <button type="submit" class="button-custom button-custom-green" v-on:click="sendForm($event)">
+                                    <i class="fa fa-pencil mr-1" aria-hidden="true"></i> EDITAR
+                                </button>
+                            {% endif %}
                             </div>
                         </div>
                     </form>
@@ -64,4 +77,55 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block SCRIPT %}
+<script>
+    const url_base = "http://localhost/teste/to-do-list/admin/";
+
+    let app = new Vue({
+        el: "#formTasks",
+        data: {},
+        methods: {
+            sendForm(event) 
+            {
+                let action = event.path[3].action
+                let form = new FormData(event.target.form)
+                let request = fetch(action, { method: 'POST', body: form})
+                
+                setTimeout(() => {
+                    request
+                        .then(response => response.json())
+                        .then(data => {
+                            if (typeof data.error !== 'undefined') {
+                                swal("Oooops!", data.error, "error")
+                                return;
+                            }
+                            swal({
+                                title: data.success,
+                                text: " ",
+                                icon: "success",
+                                buttons: false
+                            })
+                            setTimeout(() => {
+                                window.location.href = `${url_base}tasks`
+                            }, 3000);
+                        })
+                        .catch(err => console.error(err))
+                }, 100);
+            },
+            newTask()
+            {
+                window.location.href = `${url_base}task/new`
+            }
+        },
+        computed: {
+            actionDefinition() {
+                let form = document.querySelector("#frmTask")
+                this.action = form
+                console.log(form)
+            }
+        }
+    })
+</script>
 {% endblock %}

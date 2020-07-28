@@ -40,7 +40,7 @@
                             .then(response => response.json())
                             .then(data => {
                                 if (typeof data.error !== 'undefined') {
-                                    alert(data.error)
+                                    swal("Oooops!", data.error, "error")
                                     return;
                                 }
                                 window.location.href = `${url_base}admin`

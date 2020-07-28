@@ -3,7 +3,10 @@ body {
 }
 
 :root {
+  --gradient-red: linear-gradient(107deg,#A82415 17%,#DB301D 112%);
+  --gradient-green: linear-gradient(107deg,#2F5C39 17%,#2EDB54 112%);
   --gradient-blue: linear-gradient(107deg,#003e60 17%,#2dd7ff 112%);
+  --gradient-yallow: linear-gradient(107deg,#FABD0C 17%,#F5ED18 112%);
   /* --gradient-blue: linear-gradient(107deg,#2db5ff 17%,#2dd7ff 112%); */
 }
 
@@ -96,12 +99,15 @@ body {
   border-color: rgba(255, 255, 255, .2);
 }
 
+button:focus,
+a:focus,
 .form-control-dark:focus {
   border-color: transparent;
   box-shadow: none;
+  outline: none;
 }
 
-.button-custom-blue {
+.button-custom {
   line-height: 48px;
   height: 48px;
   padding: 0 30px;
@@ -111,18 +117,39 @@ body {
   font-weight: 600;
   border: none;
   border-radius: 40px;
-  background: #2db5ff;
-  background-image: var(--gradient-blue);
   -webkit-transition: ease-out .2s;
   -o-transition: ease-out .2s;
   transition: ease-out .2s;
 }
 
+.button-custom-red {
+  background: #DB301D;
+  background-image: var(--gradient-red);
+}
+
+.button-custom-green {
+  background: #2EDB54;
+  background-image: var(--gradient-green);
+}
+
+.button-custom-blue {
+  background: #2db5ff;
+  background-image: var(--gradient-blue);
+}
+
+.button-custom-yallow {
+  background: #E3E31E;
+  background-image: var(--gradient-yallow);
+}
+
+.button-custom-red:hover,
+.button-custom-green:hover,
 .button-custom-blue:hover {
   color: #fff;
   text-decoration: none;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, .1);
 }
+
 
 .bg-header-custom {
   background: #2db5ff;

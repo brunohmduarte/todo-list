@@ -1,5 +1,22 @@
 {% extends "templates/admin.html" %}
 
+{% block STYLE %}
+<style>
+    /* Sweet */
+    .swal-button {
+        border-radius: 40px !important;
+    }
+    
+    .swal-button--confirm {
+        background-color: #DC3545;
+        background-image: var(--gradient-red);
+        -webkit-transition: ease-out .2s;
+        -o-transition: ease-out .2s;
+        transition: ease-out .2s;
+    }
+</style>
+{% endblock %}
+
 {% block CONTENT %}
         <div id="todo-list">
             <div class="container">
@@ -7,8 +24,8 @@
                     <div class="col-12 my-4">
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <h1 class="h2">Lista de afazeres</h1>
-                            <a href="{{base_url}}admin/task/new" class="button-custom-blue">
-                                <i class="fa fa-plus" aria-hidden="true"></i> Novo
+                            <a href="{{base_url}}admin/task/new" class="button-custom button-custom-blue">
+                                <i class="fa fa-plus" aria-hidden="true"></i> NOVO
                             </a>
                         </div>
                     </div>
@@ -49,7 +66,7 @@
                                                         <a class="dropdown-item" href="{{ base_url }}admin/task/{{ item.id }}/edit">
                                                             <i class="fa fa-pencil" aria-hidden="true"></i> Editar
                                                         </a>
-                                                        <a class="dropdown-item text-danger" href="{{ base_url }}admin/task/{{ item.id }}/remove">
+                                                        <a class="dropdown-item text-danger" href="{{ base_url }}admin/task/{{ item.id }}/remove" v-on:click.prevent="destoryRegister($event)">
                                                             <i class="fa fa-trash" aria-hidden="true"></i> Remover
                                                         </a>
                                                     </div>
@@ -89,4 +106,61 @@
                 </div>
             </div>
         </div>
+{% endblock %}
+
+{% block SCRIPT %}
+<script>
+    const url_base = "http://localhost/teste/to-do-list/admin/";
+
+    let todoList = new Vue({
+        el: "#todo-list",
+        data: {},
+        methods: {
+            destoryRegister(event) {
+
+                let action = event.target.href
+                let eventName = event.target.parentElement.parentElement.parentElement.parentElement.childNodes[0].innerText
+                
+                swal({
+                    title: `Deseja realmente remover o evento "${eventName}"?`,
+                    icon: "error",
+                    buttons: {
+                        cancel: {
+                            text: "Cancelar",
+                            value: false,
+                            visible: true,                        
+                            closeModal: true,
+                        },
+                        confirm: {
+                            text: "Remover",
+                            value: true,
+                        }
+                    },
+                })
+                .then((confirm) => {
+                    if (!confirm) {
+                        return;
+                    }
+                    return fetch(action)
+                })
+                .then(res => res.json()) 
+                .then((data) => {
+                    if (typeof data.error !== 'undefined') {
+                        swal("Oooops!", data.error, "error")
+                        return;
+                    }
+                    swal({
+                        title: data.success,
+                        text: " ",
+                        icon: "success",
+                        buttons: false
+                    })
+                    setTimeout(() => {
+                        window.location.href = `${url_base}tasks`
+                    }, 3000);
+                }) 
+            }
+        }
+    })
+</script>
 {% endblock %}
