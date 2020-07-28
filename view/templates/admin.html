@@ -19,29 +19,36 @@
             <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <input class="form-control form-control-dark" type="text" placeholder="Search" aria-label="Search">
+            <input class="form-control form-control-dark w-50 ml-3 mr-auto" type="text" placeholder="Search" aria-label="Search">
             <ul class="navbar-nav px-3">
-                <li class="nav-item text-nowrap">
-                    <a class="nav-link" href="{{base_url}}admin/logout">
-                        <i class="fa fa-sign-out" aria-hidden="true"></i> Sair
-                    </a>
+                <li class="nav-item text-white">                    
+                    Olá <span class="font-weight-bold">{{ session_user.first_name }},</span>
+                    <small>Seja bem-vindo(a)!</small>
                 </li>
             </ul>
         </nav>
 
         <div class="container-fluid">
             <div class="row">
-                <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block shadow sidebar collapse" style="background: #003e60">
                     <div class="sidebar-sticky pt-3">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link active" href="{{base_url}}admin">
+                                <a class="nav-link text-light" href="{{base_url}}admin">
                                     <i class="fa fa-home" aria-hidden="true"></i> Dashboard
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{base_url}}admin/tasks">
+                                <a class="nav-link text-light" href="{{base_url}}admin/tasks">
                                     <i class="fa fa-list" aria-hidden="true"></i> Lista de afazeres
+                                </a>
+                            </li>
+                            <li class="px-3 mt-3">
+                                <hr class="m-0">
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" href="{{base_url}}admin/logout">
+                                    <i class="fa fa-sign-out" aria-hidden="true"></i> Sair
                                 </a>
                             </li>
                         </ul>                

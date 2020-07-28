@@ -2,8 +2,8 @@
 
 namespace Source\App;
 
-use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 use Twig\Extension\DebugExtension;
 
 class Controller
@@ -30,13 +30,18 @@ class Controller
         $this->view = new Environment(new FilesystemLoader("view/"), ["debug" => true, "cache" => false]);
         $this->view->addExtension(new DebugExtension());
     }
-
+    
     /**
-     * 
+     * redirect
+     *
+     * @param  mixed $fileName
+     * @param  mixed $data
+     * @return void
      */
     public function redirect(string $fileName, array $data = []) : void
     {
         $data['base_url'] = URL_BASE;
+        $data["session_user"] = $_SESSION["user"] ?? "";
         $this->view->display($fileName, $data);
     }
 }

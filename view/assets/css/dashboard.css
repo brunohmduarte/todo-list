@@ -1,13 +1,9 @@
-body {
-  font-size: .875rem;
-}
 
 :root {
   --gradient-red: linear-gradient(107deg,#A82415 17%,#DB301D 112%);
   --gradient-green: linear-gradient(107deg,#2F5C39 17%,#2EDB54 112%);
   --gradient-blue: linear-gradient(107deg,#003e60 17%,#2dd7ff 112%);
   --gradient-yallow: linear-gradient(107deg,#FABD0C 17%,#F5ED18 112%);
-  /* --gradient-blue: linear-gradient(107deg,#2db5ff 17%,#2dd7ff 112%); */
 }
 
 /*
