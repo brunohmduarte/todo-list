@@ -20,6 +20,12 @@ $router->get("/signin", "Admin:signin");
 $router->get("/", "Admin:signin");
 
 /**
+ * Errors
+ */
+$router->group("error");
+$router->get("/{errcode}", "Error:show");
+
+/**
  * Section Admin
  */
 $router->namespace("Source\App\Admin")->group("admin");
@@ -32,14 +38,6 @@ $router->get("/task/{id}/edit", "ToDoList:update");
 $router->get("/task/{id}/remove", "ToDoList:delete");
 $router->get("/task/new", "ToDoList:create");
 $router->get("/tasks", "ToDoList:list");
-
-/**
- * Errors
- */
-$router->group("error");
-$router->get("/{errcode}", function($data) {
-    echo "<h1>Erro: {$data["errcode"]}</h1>";
-});
 
 /**
  * This method executes the routes

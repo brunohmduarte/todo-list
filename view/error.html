@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="Content-Type" content="text/html">
+
+    <title>Erro {{ errcode }}</title>
+
+    <link rel="stylesheet" href="{{ base_url }}view/assets/css/error.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+	<div class="wrapper">
+		<div class="container">
+			<div class="wrapper__content">
+				<div class="wrapper__content--description">
+                    <h1>Oooops!</h1>
+                    <h2>Erro {{ errcode }}</h2>
+					<p class="wrapper__content--description--subdescription">{{ description }}</p>
+					<p class="wrapper__content--description--message">Deseja voltar para a página inicial ou para á página anterior?</p>
+					<div class="wrapper__content--description--buttons">
+						<a href="{{ base_url }}" class="wrapper__content--description--button_home">
+							<i class="fa fa-home" aria-hidden="true"></i> HOME
+						</a>
+						<a href="javascript:void();" onclick="javascript:history.go(-1)" class="wrapper__content--description--button_back">
+							<i class="fa fa-arrow-circle-left" aria-hidden="true"></i> VOLTAR
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

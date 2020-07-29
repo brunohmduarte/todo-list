@@ -1,0 +1,109 @@
+/* @charset "UTF-8"; */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200&display=swap');
+
+html,
+body {
+    height: 100%;
+}
+body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    color: #333;
+}
+.wrapper {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.container {
+	width: 80%;
+	margin: 0 auto;
+	text-align: center;
+}
+.wrapper__content {
+	width: 100%;
+	background: url("../image/error.png") no-repeat right center;
+	background-size: 50%;
+}
+.wrapper__content--description {
+	position: relative;
+	width: 50%;
+	padding: 20px;
+	text-align: left;	
+}
+.wrapper__content--description h1 {
+	font-size: 5em;
+	line-height: 1em;
+	margin-bottom: 10px;
+}
+.wrapper__content--description p {
+	font-size: 1.1em;
+	margin-bottom: 10px;
+}
+p.wrapper__content--description--subdescription {
+	font-weight: 500;
+}
+p.wrapper__content--description--message {
+	margin: 30px 0;
+}
+p.wrapper__content--description--ask {
+	margin-bottom: 30px;
+	font-size: .9em;
+	color: gray;
+}
+.wrapper__content--description--buttons {
+	width: 100%;
+	display: flex;
+}
+.wrapper__content--description--button_home,
+.wrapper__content--description--button_back {
+	width: 110px;
+	height: 40px;
+	margin-right: 20px;
+	padding: 5px 20px;
+	text-align: center;
+	line-height: 40px;
+	display: block;
+	border-radius: 30px;
+	text-decoration: none;
+	font-weight: 600;
+}
+.wrapper__content--description--button_home:hover,
+.wrapper__content--description--button_back:hover {
+	box-shadow: 0 5px 10px rgba(0,0,0, .22);
+}
+.wrapper__content--description--button_home {
+    background: #F5E759;
+    background-image: linear-gradient(107deg, #FFB50C 25%, #F5E759 100%);
+	border: none;
+	color: white;
+}
+.wrapper__content--description--button_back {
+	background: white;
+	border: 2px solid orange;
+	color: orange;
+}
+.wrapper__content--description--button_home i,
+.wrapper__content--description--button_back i {
+	font-size: 1.3em;
+	margin-right: 5px;
+}
+.wrapper__content--image {
+	position: relative;
+	width: 30%;
+	padding: 20px;
+	text-align: center;
+}
