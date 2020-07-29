@@ -5,21 +5,28 @@
 {% endblock %}
 
 {% block CONTENT %}
-    <div id="site">
-        <form action="{{base_url}}register" name="frmSignup" id="frmSignup" method="POST" class="form-signin" v-on:submit.prevent>
+    <div id="signup">
+        <form action="{{base_url}}register" name="frmSignup" id="frmSignup" method="POST" class="form-signin" v-on:submit.prevent novalidate="true">
             <h1 class="h3 mb-4 font-weight-normal text-center">Cadastre-se</h1>
 
+            <div class="alert alert-danger" v-if="errors.length">
+                <b>Erro de validação</b>
+                <ul>
+                    <li v-for="erro in errors">${ erro }</li>
+                </ul>
+            </div>
+
             <label for="name" class="sr-only">Nome</label>
-            <input type="text" id="name" name="name" class="form-control" value="" placeholder="Nome" required autofocus autocomplete="off">
+            <input type="text" id="name" name="name" class="form-control" v-model="form.name" placeholder="Nome" required autofocus autocomplete="off">
             
             <label for="address_email" class="sr-only">E-mail</label>
-            <input type="email" id="address_email" name="address_email" class="form-control" value="" placeholder="E-mail" required autocomplete="off">
+            <input type="email" id="address_email" name="address_email" class="form-control" v-model="form.email" placeholder="E-mail" required autocomplete="off">
             
             <label for="password" class="sr-only">Senha</label>
-            <input type="password" id="password" name="password" class="form-control" value="" placeholder="Senha" required autocomplete="off">
+            <input type="password" id="password" name="password" class="form-control" v-model="form.password" placeholder="Senha" required autocomplete="off">
             
             <label for="confirm_password" class="sr-only">Confirmação de senha</label>
-            <input type="password" id="confirm_password" name="confirm_password" class="form-control" value="" placeholder="Confirmação de senha" required autocomplete="off">
+            <input type="password" id="confirm_password" name="confirm_password" class="form-control" v-model="form.confirm_password" placeholder="Confirmação de senha" required autocomplete="off">
             
             <div class="text-left mt-1">
                 <small class="mr-2">Eu já possuo um cadastro. <a href="{{base_url}}signin">Entrar</a></small>
@@ -35,11 +42,24 @@
 {% block SCRIPT %}
     <script>
         let app = new Vue({
-            el: "#site",
-            data: {},
+            el: "#signup",
+            delimiters: ['${', '}'],
+            data: {
+                errors: [],
+                form: {
+                    name: null,
+                    email: null,
+                    password: null,
+                    confirm_password: null
+                }
+            },
             methods: {
                 registerUser(event) {
 
+                    if (!this.validateForm()) {
+                        return;
+                    }
+                    
                     let form = new FormData(event.target.form)
                     let request = fetch("register", { method: 'POST', body: form})
                     
@@ -55,6 +75,41 @@
                             })
                             .catch(err => console.error(err))
                     }, 500);
+                },
+                validateForm() {
+                    this.errors = []
+
+                    if (!this.form.name) {
+                        this.errors.push("O campo Nome é obrigatório!")
+                    }
+                    if (!this.form.email) {
+                        this.errors.push("O campo E-mail é obrigatório!")
+                    }
+                    if (!this.isValidEmail(this.form.email)) {
+                        this.errors.push("E-mail inválido!")
+                    }
+                    if (!this.form.password) {
+                        this.errors.push("O campo Senha é obrigatório!")
+                    }
+                    if (!this.form.confirm_password) {
+                        this.errors.push("O campo Confirmação de Senha é obrigatório!")
+                    }
+                    if (!this.isValidConfirmPassword()) {
+                        this.errors.push("A confirmação de senha não confere!")
+                    }
+
+                    return !this.errors.length
+                },
+                isValidEmail(email) {
+                    if (email == "") {
+                        return false
+                    }
+
+                    let regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                    return regex.test(email)
+                },
+                isValidConfirmPassword() {
+                    return (this.form.password == this.form.confirm_password)
                 }
             }
         })

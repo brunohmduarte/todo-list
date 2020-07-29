@@ -9,7 +9,8 @@ body {
   /* --gradient-blue: linear-gradient(107deg,#2db5ff 17%,#2dd7ff 112%); */
 }
 
-#site {
+#signin,
+#signup {
   height: 100%;
   display: -ms-flexbox;
   display: flex;

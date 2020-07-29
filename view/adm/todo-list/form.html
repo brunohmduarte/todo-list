@@ -1,10 +1,19 @@
 {% extends "templates/admin.html" %}
 
+{% block STYLE %}
+<style>
+    .required:after {
+        content: " * ";
+        color: red;
+    }
+</style>
+{% endblock %}
+
 {% block CONTENT %}
     <div id="formTasks">
         <div class="container">
             <div class="row">
-                <div class="col-12 my-5 border-bottom">
+                <div class="col-12 mt-5 mb-3 border-bottom">
                     <div class="float-left">
                         <h1>Lista de afazeres</h1>
                     </div>
@@ -20,45 +29,35 @@
                     </div>
                 </div>
 
+                <div class="col-12" v-if="errors.length">
+                    <div class="alert alert-danger col-sm-9">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <b>Erro de validação</b>
+                        <ul class="pl-3">
+                            <li v-for="erro in errors">${ erro }</li>
+                        </ul>
+                    </div>
+                </div>
+
                 <div class="col-12 mb-4">
                     <form action="{{base_url}}admin/task/{{ action }}" name="frmTask" id="frmTask" method="post" v-on:submit.prevent>
                         {% if (action == 'edit') %}
                             <input type="hidden" name="id" id="id" value="{{ data.id ?? '' }}">
                         {% endif %}
 
+                        <div id="input-event" data-event="{{ data.event ?? '' }}"></div>
+
+                        <div id="input-description" data-description="{{ data.description ?? '' }}"></div>
+
+                        <div id="input-start" data-start-date="{{ data.start_date ?? '' }}" data-start-time="{{ data.start_time ?? '' }}"></div>
+
+                        <div id="input-closing" data-closing-date="{{ data.closing_date ?? '' }}" data-closing-time="{{ data.closing_time ?? '' }}"></div>
+
                         <div class="form-group row">
-                            <label for="event" class="col-sm-2 col-form-label font-weight-bold">Evento</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="event" name="event" value="{{ data.event ?? '' }}" autocomplete="off" placeholder="Digite nome do evento.">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="description" class="col-sm-2 col-form-label font-weight-bold">Descrição</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="description" name="description" value="{{ data.description ?? '' }}" autocomplete="off" placeholder="Digite uma breve descrição do evento.">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="start_date" class="col-2 col-form-label font-weight-bold">Data/Hora de início</label>
-                            <div class="col-5">
-                                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ data.start_date ?? '' }}" autocomplete="off" placeholder="00/00/0000">
-                            </div>
-                            <div class="col-5">
-                                <input type="time" class="form-control" id="start_time" name="start_time" value="{{ data.start_time ?? '' }}" autocomplete="off" placeholder="00:00">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="closing_date" class="col-2 col-form-label font-weight-bold">Data/Hora de encerramento</label>
-                            <div class="col-5">
-                                <input type="date" class="form-control" id="closing_date" name="closing_date" value="{{ data.closing_date ?? '' }}" autocomplete="off" placeholder="00/00/0000">
-                            </div>
-                            <div class="col-5">
-                                <input type="time" class="form-control" id="closing_time" name="closing_time" value="{{ data.closing_time ?? '' }}" autocomplete="off" placeholder="00:00">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="event" class="col-sm-2 col-form-label"></label>
-                            <div class="col-sm-10">
+                            <label for="event" class="col-sm-3 col-form-label"></label>
+                            <div class="col-sm-6">
                             {% if action == "register" %}
                                 <button type="submit" class="button-custom button-custom-blue" v-on:click="sendForm($event)">
                                     <i class="fa fa-paper-plane mr-1" aria-hidden="true"></i> SALVAR
@@ -83,10 +82,25 @@
 <script>
     let app = new Vue({
         el: "#formTasks",
-        data: {},
+        delimiters: ['${', '}'],
+        data: {
+            errors: [],
+            form: {
+                event: null,
+                description: null,
+                startDate: null,
+                startTime: null,
+                closingDate: null,
+                closingTime: null
+            }
+        },
         methods: {
-            sendForm(event) 
-            {
+            sendForm(event) {
+
+                if (!this.validateForm()) {
+                    return
+                }
+                
                 let action = event.path[3].action
                 let separetor = action.split("/")
                 let form = new FormData(event.target.form)
@@ -113,10 +127,123 @@
                         .catch(err => console.error(err))
                 }, 100);
             },
-            newTask()
-            {
-                window.location.href = "task/new"
+            newTask() {
+                window.location.href = "../../task/new"
+            },
+            validateForm() {
+
+                this.errors = []
+
+                if (!inputEvent.form.event) {
+                    this.errors.push("O campo Evento é obrigatório!")
+                }
+                if (!inputStart.form.startDate) {
+                    this.errors.push("O campo Data Início é obrigatório!")
+                }
+                if (!inputStart.form.startTime) {
+                    this.errors.push("O campo Hora Início é obrigatório!")
+                }
+                
+                return !this.errors.length
             }
+        }
+    })
+
+    let inputEvent = new Vue({
+        el: "#input-event",
+        data: { 
+            form: { 
+                event: null 
+            } 
+        },
+        template: `
+            <div class="form-group row">
+                <label for="event" class="col-sm-3 col-form-label font-weight-bold required">Evento</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="event" name="event" v-model="form.event" autocomplete="off" placeholder="Digite nome do evento.">
+                </div>
+            </div>
+        `,
+        beforeMount() {
+            this.form.event = this.$el.attributes["data-event"].value
+            app.form.event = this.form.event
+        }
+    })
+
+    let inputDescription = new Vue({
+        el: "#input-description",
+        data: { 
+            form: { 
+                description: null 
+            } 
+        },
+        template: `
+            <div class="form-group row">
+                <label for="description" class="col-sm-3 col-form-label font-weight-bold">Descrição</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="description" name="description" v-model="form.description" autocomplete="off" placeholder="Digite uma breve descrição do evento.">
+                </div>
+            </div>
+        `,
+        beforeMount() {
+            this.form.description = this.$el.attributes["data-description"].value
+            app.form.description = this.form.description
+        }
+    })
+
+    let inputStart = new Vue({
+        el: "#input-start",
+        data: { 
+            form: { 
+                startDate: null,
+                startTime: null
+            } 
+        },
+        template: `
+            <div class="form-group row">
+                <label for="start_date" class="col-sm-3 col-form-label font-weight-bold required">Data/Hora de início</label>
+                <div class="col-3">
+                    <input type="date" class="form-control" id="start_date" name="start_date" v-model="form.startDate" autocomplete="off" placeholder="00/00/0000">
+                </div>
+                <div class="col-3">
+                    <input type="time" class="form-control" id="start_time" name="start_time" v-model="form.startTime" autocomplete="off" placeholder="00:00">
+                </div>
+            </div>
+        `,
+        beforeMount() {
+            this.form.startDate = this.$el.attributes["data-start-date"].value
+            app.form.startDate = this.form.startDate
+
+            this.form.startTime = this.$el.attributes["data-start-time"].value
+            app.form.startTime = this.form.startTime
+        }
+    })
+
+    let inputClosing = new Vue({
+        el: "#input-closing",
+        data: { 
+            form: { 
+                closingDate: null,
+                closingTime: null
+            } 
+        },
+        template: `
+            <div class="form-group row">
+                <label for="closing_date" class="col-sm-3 col-form-label font-weight-bold">Data/Hora de encerramento</label>
+                <div class="col-3">
+                    <input type="date" class="form-control" id="closing_date" name="closing_date" v-model="form.closingDate" autocomplete="off" placeholder="00/00/0000">
+                </div>
+                <div class="col-3">
+                    <input type="time" class="form-control" id="closing_time" name="closing_time" v-model="form.closingTime" autocomplete="off" placeholder="00:00">
+                </div>
+            </div>
+        `,
+        beforeMount() {
+            this.form.closingDate = this.$el.attributes["data-closing-date"].value
+            app.form.closingDate = this.form.closingDate
+            
+            this.form.closingTime = this.$el.attributes["data-closing-time"].value
+            app.form.closingTime = this.form.closingTime
         }
     })
 </script>

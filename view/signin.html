@@ -1,15 +1,22 @@
 {% extends "templates/credentials.html" %}
 
 {% block CONTENT %}
-    <div id="site">
-        <form class="form-signin" id="frmSingIn" name="frmSingIn" method="post" v-on:submit.prevent>
+    <div id="signin">
+        <form class="form-signin" id="frmSingIn" name="frmSingIn" method="post" v-on:submit.prevent novalidate="true">
             <h1 class="h3 mb-4 font-weight-normal text-center">Login</h1>
 
+            <div class="alert alert-danger" v-if="errors.length">
+                <b>Erro de validação</b>
+                <ul>
+                    <li v-for="erro in errors">${ erro }</li>
+                </ul>
+            </div>
+
             <label for="address_email" class="sr-only">E-mail</label>
-            <input type="email" id="address_email" name="address_email" value="" class="form-control" placeholder="E-mail" required autofocus autocomplete="off">
+            <input type="email" id="address_email" name="address_email" v-model="form.email" class="form-control" placeholder="E-mail" required autofocus autocomplete="off">
             
             <label for="password" class="sr-only">Senha</label>
-            <input type="password" id="password" name="password" value="" class="form-control" placeholder="Senha" required autocomplete="off">
+            <input type="password" id="password" name="password" v-model="form.password" class="form-control" placeholder="Senha" required autocomplete="off">
             
             <div class="text-left">
                 <small class="mr-2">Você é novo por aqui? <a href="{{base_url}}signup">Cadastre-se</a></small>
@@ -25,11 +32,22 @@
 {% block SCRIPT %}
     <script>
         let app = new Vue({
-            el: "#site",
-            data: {},
+            el: "#signin",
+            delimiters: ['${', '}'],
+            data: {
+                errors: [],
+                form: {
+                    email: null,
+                    password: null
+                }
+            },
             methods: {
                 userAuthentication(event) {
 
+                    if (!this.validateForm()) {
+                        return;
+                    }
+                    
                     let form = new FormData(event.target.form)
                     let authenticate = fetch("authenticate", { method: 'POST', body: form})
 
@@ -45,6 +63,29 @@
                             })
                             .catch(err => console.error(err))
                     }, 500);
+                },
+                validateForm() {
+                    this.errors = []
+
+                    if (!this.form.email) {
+                        this.errors.push("O campo e-mail é obrigatório!")
+                    }
+                    if (!this.isValidEmail(this.form.email)) {
+                        this.errors.push("E-mail inválido!")
+                    }
+                    if (!this.form.password) {
+                        this.errors.push("O campo senha é obrigatório!")
+                    }
+
+                    return !this.errors.length
+                },
+                isValidEmail(email) {
+                    if (email == "") {
+                        return false
+                    }
+
+                    let regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                    return regex.test(email)
                 }
             }
         })
