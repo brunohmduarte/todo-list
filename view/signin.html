@@ -24,8 +24,6 @@
 
 {% block SCRIPT %}
     <script>
-        const url_base = "http://localhost/teste/to-do-list/"
-
         let app = new Vue({
             el: "#site",
             data: {},
@@ -43,7 +41,7 @@
                                     swal("Oooops!", data.error, "error")
                                     return;
                                 }
-                                window.location.href = `${url_base}admin`
+                                window.location.href = "admin"
                             })
                             .catch(err => console.error(err))
                     }, 500);

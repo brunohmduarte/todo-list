@@ -81,8 +81,6 @@
 
 {% block SCRIPT %}
 <script>
-    const url_base = "http://localhost/teste/to-do-list/admin/";
-
     let app = new Vue({
         el: "#formTasks",
         data: {},
@@ -90,6 +88,7 @@
             sendForm(event) 
             {
                 let action = event.path[3].action
+                let separetor = action.split("/")
                 let form = new FormData(event.target.form)
                 let request = fetch(action, { method: 'POST', body: form})
                 
@@ -108,7 +107,7 @@
                                 buttons: false
                             })
                             setTimeout(() => {
-                                window.location.href = `${url_base}tasks`
+                                window.location.href = ((separetor[separetor.length-1] == "register") ? "../" : "../../") + "tasks"
                             }, 3000);
                         })
                         .catch(err => console.error(err))
@@ -116,14 +115,7 @@
             },
             newTask()
             {
-                window.location.href = `${url_base}task/new`
-            }
-        },
-        computed: {
-            actionDefinition() {
-                let form = document.querySelector("#frmTask")
-                this.action = form
-                console.log(form)
+                window.location.href = "task/new"
             }
         }
     })

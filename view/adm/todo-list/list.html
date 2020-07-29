@@ -110,8 +110,6 @@
 
 {% block SCRIPT %}
 <script>
-    const url_base = "http://localhost/teste/to-do-list/admin/";
-
     let todoList = new Vue({
         el: "#todo-list",
         data: {},
@@ -156,7 +154,7 @@
                         buttons: false
                     })
                     setTimeout(() => {
-                        window.location.href = `${url_base}tasks`
+                        window.location.href = "tasks"
                     }, 3000);
                 }) 
             }
